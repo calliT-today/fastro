@@ -7,7 +7,7 @@ import Layout from '@/layouts/Layout.astro';
 		<p class="inline-block">Hello &nbsp;</p>
 		<div class="inline-flex">
 			<div id="world"></div>
-			<span class="block-cursor border-b-2 border-black w-1"></span>
+			<span class="block-cursor border-b-2 border-foreground w-1"></span>
 		</div>
 	</main>
 </Layout>
@@ -29,6 +29,7 @@ import Layout from '@/layouts/Layout.astro';
 	}
 </style>
 <script>
+	const greet = () => {};
 	window.addEventListener('load', () => {
 		const worlds = ['ASTRO', 'REACT', 'TAILWIND', 'SHADCN/UI', 'FRAMER MOTION'];
 		let currentWordIndex = 0;
@@ -37,6 +38,7 @@ import Layout from '@/layouts/Layout.astro';
 		let wordInProgress = '';
 
 		const worldElement = document.getElementById('world');
+		if (!worldElement) return;
 
 		function startTyping() {
 			worldElement!.innerText = wordInProgress;
