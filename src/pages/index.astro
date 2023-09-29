@@ -1,11 +1,77 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import '@/styles/globals.css';
-import { Button } from '@/components/ui/button';
 ---
 
 <Layout title="Welcome to Astro.">
 	<main>
-		<Button className='float-right m-4'>Connect Wallet</Button>
+		<p class="inline-block">Hello &nbsp;</p>
+		<div class="inline-flex">
+			<div id="world"></div>
+			<span class="block-cursor border-b-2 border-black w-1"></span>
+		</div>
 	</main>
 </Layout>
+
+<style>
+	.block-cursor {
+		width: 1ch;
+		animation: blink 1s infinite;
+	}
+	@keyframes blink {
+		0%,
+		49% {
+			visibility: visible;
+		}
+		50%,
+		100% {
+			visibility: hidden;
+		}
+	}
+</style>
+<script>
+	window.addEventListener('load', () => {
+		const worlds = ['ASTRO', 'REACT', 'TAILWIND', 'SHADCN/UI', 'FRAMER MOTION'];
+		let currentWordIndex = 0;
+		let currentCharIndex = 0;
+		let isDeleting = false;
+		let wordInProgress = '';
+
+		const worldElement = document.getElementById('world');
+
+		function startTyping() {
+			worldElement!.innerText = wordInProgress;
+		}
+
+		function process() {
+			const currentWord = worlds[currentWordIndex];
+
+			if (isDeleting) {
+				if (wordInProgress.length !== 0) {
+					wordInProgress = currentWord.slice(0, currentCharIndex - 1);
+					currentCharIndex--;
+				}
+			} else {
+				wordInProgress = currentWord.slice(0, currentCharIndex + 1);
+				currentCharIndex++;
+			}
+
+			startTyping();
+
+			if (!isDeleting && wordInProgress.length === currentWord.length) {
+				setTimeout(() => {
+					isDeleting = true;
+					process();
+				}, 1500);
+				return;
+			} else if (isDeleting && wordInProgress.length === 0) {
+				isDeleting = false;
+				currentWordIndex = (currentWordIndex + 1) % worlds.length;
+				currentCharIndex = 0;
+			}
+
+			setTimeout(process, isDeleting ? 100 : 150);
+		}
+
+		process();
+	});
+</script>
